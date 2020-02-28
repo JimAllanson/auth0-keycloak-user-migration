@@ -13,14 +13,13 @@ jobs:
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-          DOCKER_REGISTRY_URL: docker.pkg.github.com
 
       - name: Build :latest
         if: success()
-        run: docker build -t docker.pkg.github.com/jimallanson/auth0-keycloak-user-migration:latest .
+        run: docker build -t jimallanson/auth0-keycloak-user-migration:latest .
         
       - name: Push to docker hub :latest
         if: success()
         uses: actions-hub/docker@master
         with:
-          args: push docker.pkg.github.com/jimallanson/auth0-keycloak-user-migration:latest
+          args: push jimallanson/auth0-keycloak-user-migration:latest
