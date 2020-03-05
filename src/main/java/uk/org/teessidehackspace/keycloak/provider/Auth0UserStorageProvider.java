@@ -19,7 +19,6 @@ import org.keycloak.models.UserModel;
 import org.keycloak.models.credential.PasswordCredentialModel;
 import org.keycloak.storage.StorageId;
 import org.keycloak.storage.UserStorageProvider;
-import org.keycloak.storage.adapter.AbstractUserAdapter;
 import org.keycloak.storage.user.UserLookupProvider;
 
 import java.util.HashMap;
@@ -64,13 +63,9 @@ public class Auth0UserStorageProvider implements UserStorageProvider, Credential
                 .setScope("openid");
         try {
             TokenHolder holder = request.execute();
-
-            UserModel createdUser = session.users().addUser(realm, user.getUsername());
-            createdUser.setEmail(user.getUsername());
-            createdUser.setEnabled(true);
-            createdUser.setEmailVerified(true);
-            session.userCredentialManager().updateCredential(realm, createdUser, UserCredentialModel.password(password));
-
+            session.userCredentialManager().updateCredential(realm, user, UserCredentialModel.password(password));
+            user.addRequiredAction(UserModel.RequiredAction.UPDATE_PROFILE);
+            user.setFederationLink(null);
             return true;
         } catch (APIException exception) {
             logger.error(exception);
@@ -81,7 +76,6 @@ public class Auth0UserStorageProvider implements UserStorageProvider, Credential
     }
 
     public void close() {
-
     }
 
     public UserModel getUserById(String id, RealmModel realm) {
@@ -89,7 +83,6 @@ public class Auth0UserStorageProvider implements UserStorageProvider, Credential
         String username = storageId.getExternalId();
         return getUserByUsername(username, realm);
     }
-
 
     public UserModel getUserByUsername(String username, RealmModel realm) {
         UserModel adapter = loadedUsers.get(username);
@@ -118,14 +111,15 @@ public class Auth0UserStorageProvider implements UserStorageProvider, Credential
 
 
     protected UserModel createAdapter(RealmModel realm, String username) {
-        return new AbstractUserAdapter(session, realm, model) {
-            public String getUsername() {
-                return username;
-            }
-            public String getEmail() {
-                return username;
-            }
-        };
+        UserModel local = session.userLocalStorage().getUserByUsername(username, realm);
+        if (local == null) {
+            local = session.userLocalStorage().addUser(realm, username);
+            local.setEmail(username);
+            local.setEnabled(true);
+            local.setEmailVerified(true);
+            local.setFederationLink(model.getId());
+        }
+        return local;
     }
 
     public UserModel getUserByEmail(String email, RealmModel realm) {
