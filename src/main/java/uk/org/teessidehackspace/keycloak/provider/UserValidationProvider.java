@@ -94,6 +94,7 @@ public class UserValidationProvider implements FormAction, FormActionFactory {
             Pattern pattern = Pattern.compile("[A-Za-z0-9_-]+", Pattern.CASE_INSENSITIVE);
             Matcher matcher = pattern.matcher(username);
             if(!matcher.find()) {
+                context.error(Errors.INVALID_REGISTRATION);
                 errors.add(new FormMessage(RegistrationPage.FIELD_USERNAME, Messages.INVALID_USERNAME));
                 formData.remove(Validation.FIELD_USERNAME);
                 context.validationError(formData, errors);
