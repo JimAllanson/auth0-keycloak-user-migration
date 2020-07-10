@@ -60,7 +60,6 @@ public class UserValidationProvider implements FormAction, FormActionFactory {
 
     @Override
     public void buildPage(FormContext context, LoginFormsProvider form) {
-        context.getUser().setUsername("");
     }
 
     @Override
