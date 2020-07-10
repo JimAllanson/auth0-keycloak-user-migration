@@ -64,7 +64,7 @@ public class Auth0UserStorageProvider implements UserStorageProvider, Credential
         try {
             TokenHolder holder = request.execute();
             session.userCredentialManager().updateCredential(realm, user, UserCredentialModel.password(password));
-            user.addRequiredAction(UserModel.RequiredAction.UPDATE_PROFILE);
+            user.addRequiredAction(UpdateProfileWithUsernameValidation.PROVIDER_ID);
             user.setFederationLink(null);
             return true;
         } catch (APIException exception) {
