@@ -50,9 +50,7 @@ public class UpdateProfileWithUsernameValidation implements RequiredActionProvid
 
         List<FormMessage> errors = Validation.validateUpdateProfileForm(realm, formData);
 
-        Pattern pattern = Pattern.compile("[A-Za-z0-9_-]+", Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(formData.getFirst(FIELD_USERNAME));
-        if(!matcher.find()) {
+        if(!formData.getFirst(FIELD_USERNAME).matches("[A-Za-z0-9_-]+")) {
             errors.add(new FormMessage(FIELD_USERNAME, Messages.INVALID_USERNAME));
         }
 

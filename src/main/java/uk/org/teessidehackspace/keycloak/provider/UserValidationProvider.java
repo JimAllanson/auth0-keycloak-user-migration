@@ -95,9 +95,7 @@ public class UserValidationProvider implements FormAction, FormActionFactory {
             }
 
             logger.info("Checking username is valid");
-            Pattern pattern = Pattern.compile("[A-Za-z0-9_-]+", Pattern.CASE_INSENSITIVE);
-            Matcher matcher = pattern.matcher(username);
-            if(!matcher.find()) {
+            if(!username.matches("[A-Za-z0-9_-]+")) {
                 context.error(Errors.INVALID_REGISTRATION);
                 errors.add(new FormMessage(RegistrationPage.FIELD_USERNAME, Messages.INVALID_USERNAME));
                 formData.remove(Validation.FIELD_USERNAME);
