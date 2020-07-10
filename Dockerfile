@@ -4,5 +4,5 @@ WORKDIR /build
 COPY . .
 RUN gradle jar
 
-FROM jboss/keycloak:9.0.0
+FROM jboss/keycloak:10.0.2
 COPY --from=build /build/build/libs/user-migration-0.1.0.jar /opt/jboss/keycloak/standalone/deployments/user-migration.jar

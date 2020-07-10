@@ -15,11 +15,11 @@ repositories {
 
 
 dependencies {
-    compileOnly group: 'org.keycloak', name: 'keycloak-core', version:'9.0.0'
-    compileOnly group: 'org.keycloak', name: 'keycloak-server-spi', version:'9.0.0'
-    compileOnly group: 'org.keycloak', name: 'keycloak-server-spi-private', version:'9.0.0'
+    compileOnly group: 'org.keycloak', name: 'keycloak-core', version:'10.0.2'
+    compileOnly group: 'org.keycloak', name: 'keycloak-server-spi', version:'10.0.2'
+    compileOnly group: 'org.keycloak', name: 'keycloak-server-spi-private', version:'10.0.2'
     compile group: 'org.jboss.logging', name: 'jboss-logging', version:'3.4.1.Final'
-    compileOnly group: 'org.keycloak', name: 'keycloak-services', version:'9.0.0'
+    compileOnly group: 'org.keycloak', name: 'keycloak-services', version:'10.0.2'
     compile group: 'com.auth0', name: 'auth0', version: '1.15.0'
 }
 
