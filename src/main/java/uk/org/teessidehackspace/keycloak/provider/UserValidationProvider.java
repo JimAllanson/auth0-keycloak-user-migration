@@ -1,5 +1,6 @@
 package uk.org.teessidehackspace.keycloak.provider;
 
+import org.jboss.logging.Logger;
 import org.keycloak.Config;
 import org.keycloak.authentication.FormAction;
 import org.keycloak.authentication.FormActionFactory;
@@ -29,6 +30,8 @@ import java.util.regex.Pattern;
  * @version $Revision: 1 $
  */
 public class UserValidationProvider implements FormAction, FormActionFactory {
+
+    private static final Logger logger = Logger.getLogger(UserValidationProvider.class);
 
     public static final String PROVIDER_ID = "registration-user-creation-custom";
 
@@ -91,6 +94,7 @@ public class UserValidationProvider implements FormAction, FormActionFactory {
                 return;
             }
 
+            logger.info("Checking username is valid");
             Pattern pattern = Pattern.compile("[A-Za-z0-9_-]+", Pattern.CASE_INSENSITIVE);
             Matcher matcher = pattern.matcher(username);
             if(!matcher.find()) {
@@ -98,8 +102,10 @@ public class UserValidationProvider implements FormAction, FormActionFactory {
                 errors.add(new FormMessage(RegistrationPage.FIELD_USERNAME, Messages.INVALID_USERNAME));
                 formData.remove(Validation.FIELD_USERNAME);
                 context.validationError(formData, errors);
+                logger.info("Username is invalid, fail");
                 return;
             }
+            logger.info("username is valid");
 
         }
         context.success();
